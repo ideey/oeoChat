@@ -10,7 +10,7 @@
 <img src="https://img.shields.io/badge/gorm-1.22.5-red"/>
 </div>
 
-[English](./README-en.md) | 简体中文
+[English](./README-en.md) | 简体中文 oeoChat
 
 ## 不同版本
 
