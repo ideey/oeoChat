@@ -91,13 +91,14 @@ func (myOpenaiService *OpenaiService) GetOpenaiInfoList(info openaiReq.OpenaiSea
 
 // OpenaiCompletions openai的Completions接口服务
 // Author [piexlmax](https://github.com/piexlmax)
-func (myOpenaiService *OpenaiService) OpenaiCompletions(completionsRequest gogpt.CompletionRequest) (resp gogpt.CompletionResponse) {
+func (myOpenaiService *OpenaiService) OpenaiCompletions(completionsRequest gogpt.CompletionRequest) (resp gogpt.CompletionResponse, err error) {
+
 	gpt3 := gogpt.NewClient(global.GVA_CONFIG.OpenAi.Token)
 	ctx := context.Background()
-	resp, err := gpt3.CreateCompletion(ctx, completionsRequest)
+	resp, err = gpt3.CreateCompletion(ctx, completionsRequest)
 	if err != nil {
 		fmt.Println("OPENAI completion请求出现错误.")
-		return
+		return resp, err
 	}
-	return resp
+	return resp, nil
 }

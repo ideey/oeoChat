@@ -185,7 +185,12 @@ func (myOpenaiApi *OpenaiApi) Completions(c *gin.Context) {
 		return
 	}
 	fmt.Printf("请求结构:%+v\n", completionsRequest)
-	res := myOpenaiService.OpenaiCompletions(completionsRequest)
+	res, err := myOpenaiService.OpenaiCompletions(completionsRequest)
+	if err != nil {
+		fmt.Println("Completion请求出错:", err)
+		response.Fail(c)
+		return
+	}
 	fmt.Printf("返回的结构:%+v\n", res)
 	response.OkWithData(res, c)
 }
@@ -230,11 +235,17 @@ func (myOpenaiApi *OpenaiApi) GetMessageFromTelegram(c *gin.Context) {
 			completionRequest.N = 1
 			completionRequest.User = user
 			completionRequest.MaxTokens = 500
-			resp := myOpenaiService.OpenaiCompletions(completionRequest) //发送Completions 请求
-
-			sendMessageInfo.ChatId = telegramBotUpdate.Message.Chat.Id
-			sendMessageInfo.Text = resp.Choices[0].Text
-			telegramService.SendMessage(sendMessageInfo)
+			resp, err := myOpenaiService.OpenaiCompletions(completionRequest) //发送Completions 请求
+			if err != nil {
+				fmt.Println("Completion请求出错:", err)
+				sendMessageInfo.ChatId = telegramBotUpdate.Message.Chat.Id
+				sendMessageInfo.Text = "请求出错,请稍后再试"
+				telegramService.SendMessage(sendMessageInfo)
+			} else {
+				sendMessageInfo.ChatId = telegramBotUpdate.Message.Chat.Id
+				sendMessageInfo.Text = resp.Choices[0].Text
+				telegramService.SendMessage(sendMessageInfo)
+			}
 		}
 	}
 	//处理直接发图片的信息
