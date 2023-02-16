@@ -220,8 +220,20 @@ func (myOpenaiApi *OpenaiApi) GetMessageFromTelegram(c *gin.Context) {
 				}
 			}
 		} else {
+			ask := telegramBotUpdate.Message.Text
+			user := telegramBotUpdate.Message.From.UserName
+			//构建openai的 Completions  请求体
+			var completionRequest gogpt.CompletionRequest
+			completionRequest.Model = gogpt.GPT3TextDavinci003
+			completionRequest.Temperature = 0.8
+			completionRequest.Prompt = ask
+			completionRequest.N = 1
+			completionRequest.User = user
+			completionRequest.MaxTokens = 500
+			resp := myOpenaiService.OpenaiCompletions(completionRequest) //发送Completions 请求
+
 			sendMessageInfo.ChatId = telegramBotUpdate.Message.Chat.Id
-			sendMessageInfo.Text = "请直接发送图片哦,最好是美女哦~"
+			sendMessageInfo.Text = resp.Choices[0].Text
 			telegramService.SendMessage(sendMessageInfo)
 		}
 	}

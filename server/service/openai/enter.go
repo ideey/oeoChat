@@ -35,8 +35,8 @@ func (telegramService *TelegramService) CommonDo(command string, telegramBotUpda
 		// db := global.GVA_DB.Model(&wallpaper)
 		// db.Count(&count)
 		tempStr := `欢迎使用神医的oeoChat机器人,此机器人对接openAi官方API。
-		使用方法: /ask 问题, 例如:
-		/ask 漂亮是一种资本吗
+		使用方法:直接发送文字问题,免费额度有限，请珍惜使用.
+		按文字生成图片的功能正在开发中
 `
 		sendMessageInfo.ChatId = telegramBotUpdate.Message.Chat.Id
 		// sendMessageInfo.Text = fmt.Sprintf(tempStr)
@@ -48,8 +48,8 @@ func (telegramService *TelegramService) CommonDo(command string, telegramBotUpda
 	if command == "/start" {
 		sendMessageInfo.ChatId = telegramBotUpdate.Message.Chat.Id
 		sendMessageInfo.Text = `欢迎使用神医的oeoChat机器人,此机器人对接openAi官方API。
-		使用方法: /ask 问题, 例如:
-		/ask 漂亮是一种资本吗
+		使用方法: 直接发送文字问题,免费额度有限，请珍惜使用.
+		按文字生成图片的功能正在开发中
 		`
 		sendMessageInfo.ParseMode = "HTML"
 		telegramService.SendMessage(sendMessageInfo)
