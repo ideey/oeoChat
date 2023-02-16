@@ -27,6 +27,7 @@ func main() {
 	zap.ReplaceGlobals(global.GVA_LOG)
 	global.GVA_DB = initialize.Gorm() // gorm连接数据库
 	initialize.Mongodb()              //初始化mongodb
+	initialize.GodotEnv()             //加载env配置文件
 	initialize.Timer()
 	initialize.DBList()
 	if global.GVA_DB != nil {
