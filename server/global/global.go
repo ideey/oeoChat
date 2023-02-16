@@ -4,6 +4,7 @@ import (
 	"sync"
 
 	"github.com/flipped-aurora/gin-vue-admin/server/utils/timer"
+	"github.com/qiniu/qmgo"
 	"github.com/songzhibin97/gkit/cache/local_cache"
 
 	"golang.org/x/sync/singleflight"
@@ -30,6 +31,11 @@ var (
 
 	BlackCache local_cache.Cache
 	lock       sync.RWMutex
+
+	//以下为自定义 mongodb请求
+	QmgoClient         *qmgo.Client
+	QmgoDatabase       *qmgo.Database
+	QmgoCollCompletion *qmgo.Collection
 )
 
 // GetGlobalDBByDBName 通过名称获取db list中的db

@@ -28,4 +28,10 @@ type Server struct {
 
 	// 跨域配置
 	Cors CORS `mapstructure:"cors" json:"cors" yaml:"cors"`
+
+	//mongodb配置
+	Mongodb Mongodb `mapstructure:"mongodb" json:"mongodb" yaml:"mongodb"`
+
+	//OpenAi Token
+	OpenAi OpenAi `mapstructure:"openai" json:"openai" yaml:"openai"`
 }
