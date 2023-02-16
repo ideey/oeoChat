@@ -198,6 +198,7 @@ func (myOpenaiApi *OpenaiApi) GetMessageFromTelegram(c *gin.Context) {
 	err := c.ShouldBindJSON(&telegramBotUpdate)
 	if err != nil {
 		fmt.Printf("绑定出错:err: %v\n", err)
+		return
 	}
 	var sendMessageInfo openai.SendMessageToUserStruct
 	//处理文字信息

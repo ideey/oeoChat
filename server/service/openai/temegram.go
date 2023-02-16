@@ -2,6 +2,7 @@ package openai
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/flipped-aurora/gin-vue-admin/server/model/openai"
 	"github.com/go-resty/resty/v2"
@@ -13,7 +14,8 @@ type TelegramService struct {
 //发送信息
 func (telegramService *TelegramService) SendMessage(message openai.SendMessageToUserStruct) {
 
-	url := "https://api.telegram.org/bot5736458056:AAGaEhg33OwjCRFQXzyIQjfvN4dtkNmr8B4/sendMessage"
+	// url := "https://api.telegram.org/bot6250735595:AAF8GxRVi0wSY734CLoJd-3GbT2Yof-gdOA/sendMessage"
+	url := "https://api.telegram.org/bot" + os.Getenv("TELEGRAM_TOKEN") + "/sendMessage"
 	client := resty.New()
 	resp, err := client.R().
 		SetHeader("Content-Type", "application/json").
