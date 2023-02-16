@@ -36,6 +36,11 @@ var (
 	QmgoClient         *qmgo.Client
 	QmgoDatabase       *qmgo.Database
 	QmgoCollCompletion *qmgo.Collection
+
+	//env配置保存在全局变量
+	OPENAI_TOKEN   string
+	MONGODB_URI    string
+	TELEGRAM_TOKEN string
 )
 
 // GetGlobalDBByDBName 通过名称获取db list中的db

@@ -93,7 +93,7 @@ func (myOpenaiService *OpenaiService) GetOpenaiInfoList(info openaiReq.OpenaiSea
 // Author [piexlmax](https://github.com/piexlmax)
 func (myOpenaiService *OpenaiService) OpenaiCompletions(completionsRequest gogpt.CompletionRequest) (resp gogpt.CompletionResponse, err error) {
 
-	gpt3 := gogpt.NewClient(global.GVA_CONFIG.OpenAi.Token)
+	gpt3 := gogpt.NewClient(global.OPENAI_TOKEN)
 	ctx := context.Background()
 	resp, err = gpt3.CreateCompletion(ctx, completionsRequest)
 	if err != nil {
