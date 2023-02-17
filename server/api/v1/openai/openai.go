@@ -3,6 +3,7 @@ package openai
 import (
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
@@ -224,36 +225,66 @@ func (myOpenaiApi *OpenaiApi) GetMessageFromTelegram(c *gin.Context) {
 					telegramService.CommonDo(command, telegramBotUpdate, args[1:]...)
 				}
 			}
-		} else {
+		} else { //问题处理环节 - 非命令
 			ask := telegramBotUpdate.Message.Text
 			user := telegramBotUpdate.Message.From.UserName
 			//构建openai的 Completions  请求体
 			var completionRequest gogpt.CompletionRequest
+			var myCompletion openai.Completion
 			completionRequest.Model = gogpt.GPT3TextDavinci003
 			completionRequest.Temperature = 0.8
 			completionRequest.Prompt = ask
 			completionRequest.N = 1
 			completionRequest.User = user
 			completionRequest.MaxTokens = 500
+
+			//组建插入mongdb的结构体
+			myCompletion.Model = completionRequest.Model
+			myCompletion.Temperature = completionRequest.Temperature
+			myCompletion.Prompt = completionRequest.Prompt
+			myCompletion.N = completionRequest.N
+			myCompletion.User = completionRequest.User
+			myCompletion.MaxTokens = completionRequest.MaxTokens
+			myCompletion.Status = -1
+			myCompletion.CreateTimeAt = time.Now()
 			resp, err := myOpenaiService.OpenaiCompletions(completionRequest) //发送Completions 请求
 			if err != nil {
 				fmt.Println("Completion请求出错:", err)
 				sendMessageInfo.ChatId = telegramBotUpdate.Message.Chat.Id
 				sendMessageInfo.Text = "请求出错,请稍后再试"
 				telegramService.SendMessage(sendMessageInfo)
+				myCompletion.Status = 0 //失败记录
+
 			} else {
 				sendMessageInfo.ChatId = telegramBotUpdate.Message.Chat.Id
 				sendMessageInfo.Text = resp.Choices[0].Text
 				telegramService.SendMessage(sendMessageInfo)
+				myCompletion.Status = 1 //成功记录
+				myCompletion.ID = resp.ID
+				myCompletion.Object = resp.Object
+				myCompletion.Created = resp.Created
+				myCompletion.Model = resp.Model
+				if len(resp.Choices) >= 1 {
+					for i, v := range resp.Choices {
+						myCompletion.Choices[i].Text = v.Text
+						myCompletion.Choices[i].Index = v.Index
+						myCompletion.Choices[i].FinishReason = v.FinishReason
+					}
+				}
+				myCompletion.Usage.PromptTokens = resp.Usage.PromptTokens
+				myCompletion.Usage.CompletionTokens = resp.Usage.CompletionTokens
+				myCompletion.Usage.TotalTokens = resp.Usage.TotalTokens
 			}
+			myCompletion.UpdateTimeAt = time.Now()
+			myOpenaiService.SaveCompletins(myCompletion) //保存记录到mongodb
 		}
 	}
 	//处理直接发图片的信息
 	if telegramBotUpdate.Message.Photos != nil {
-
+		fmt.Println("这里哟")
 	}
 	//处理以文件形式发送的图片(排除非图片):jpg jpeg png 5M以下
 	if telegramBotUpdate.Message.Document != nil {
-
+		fmt.Println("这里哟1")
 	}
 }

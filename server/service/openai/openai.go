@@ -91,7 +91,7 @@ func (myOpenaiService *OpenaiService) GetOpenaiInfoList(info openaiReq.OpenaiSea
 
 // OpenaiCompletions openai的Completions接口服务
 // Author [piexlmax](https://github.com/piexlmax)
-func (myOpenaiService *OpenaiService) OpenaiCompletions(completionsRequest gogpt.CompletionRequest) (resp gogpt.CompletionResponse, err error) {
+func (op *OpenaiService) OpenaiCompletions(completionsRequest gogpt.CompletionRequest) (resp gogpt.CompletionResponse, err error) {
 
 	gpt3 := gogpt.NewClient(global.OPENAI_TOKEN)
 	ctx := context.Background()
@@ -101,4 +101,14 @@ func (myOpenaiService *OpenaiService) OpenaiCompletions(completionsRequest gogpt
 		return resp, err
 	}
 	return resp, nil
+}
+
+//保存Completion记录到mongodb
+func (op *OpenaiService) SaveCompletins(myCompletion openai.Completion) {
+	ctx := context.Background()
+	_, err := global.QmgoCollCompletion.InsertOne(ctx, myCompletion)
+	if err != nil {
+		fmt.Println("插入completiin记录出错:", err, myCompletion)
+	}
+
 }

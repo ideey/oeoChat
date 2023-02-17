@@ -157,7 +157,7 @@ qiniu:
   secret-key: ""
   use-cdn-domains: false
 mongodb:
-  uri: mongodb://t.deey.top:57890
+  uri: mongodb://t.mygirl.top:12345
 openai:
   token: sk-8C3thwJqVgkdF6J4
 redis:
