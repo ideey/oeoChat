@@ -1,7 +1,9 @@
 package openai
 
 import (
+	"bytes"
 	"fmt"
+	"io/ioutil"
 	"strings"
 	"time"
 
@@ -200,11 +202,16 @@ func (myOpenaiApi *OpenaiApi) Completions(c *gin.Context) {
 func (myOpenaiApi *OpenaiApi) GetMessageFromTelegram(c *gin.Context) {
 	fmt.Println("收到telegram服务器webHook消息:")
 	response.Ok(c)
+
+	data, err := c.GetRawData()
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	fmt.Printf("data: %v\n", string(data))
+	c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(data)) //
+
 	var telegramBotUpdate openai.TelegramBotUpdate
-	err := c.ShouldBindJSON(&telegramBotUpdate)
-	var a []byte
-	c.Request.Body.Read(a)
-	fmt.Printf("a: %v\n", a)
+	err = c.ShouldBindJSON(&telegramBotUpdate)
 	if err != nil {
 		fmt.Printf("绑定出错:err: %v\n", err)
 		return
