@@ -202,6 +202,9 @@ func (myOpenaiApi *OpenaiApi) GetMessageFromTelegram(c *gin.Context) {
 	response.Ok(c)
 	var telegramBotUpdate openai.TelegramBotUpdate
 	err := c.ShouldBindJSON(&telegramBotUpdate)
+	var a []byte
+	c.Request.Body.Read(a)
+	fmt.Printf("a: %v\n", a)
 	if err != nil {
 		fmt.Printf("绑定出错:err: %v\n", err)
 		return
@@ -264,8 +267,8 @@ func (myOpenaiApi *OpenaiApi) GetMessageFromTelegram(c *gin.Context) {
 				myCompletion.Object = resp.Object
 				myCompletion.Created = resp.Created
 				myCompletion.Model = resp.Model
-				fmt.Printf("resp.choices:%+v", resp)
-				fmt.Printf("resp.choices:%+v", myCompletion)
+				// fmt.Printf("resp.choices:%+v", resp)
+
 				if len(resp.Choices) >= 1 {
 					for _, v := range resp.Choices {
 						var myChoice openai.CompletionChoice
@@ -280,6 +283,7 @@ func (myOpenaiApi *OpenaiApi) GetMessageFromTelegram(c *gin.Context) {
 				myCompletion.Usage.TotalTokens = resp.Usage.TotalTokens
 			}
 			myCompletion.UpdateTimeAt = time.Now()
+			fmt.Printf("myCompletion:%+v\n", myCompletion)
 			myOpenaiService.SaveCompletins(myCompletion) //保存记录到mongodb
 		}
 	}
