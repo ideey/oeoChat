@@ -34,7 +34,7 @@ type Completion struct {
 	Stream           bool               `json:"stream,omitempty" bson:"stream,omitempty"`
 	LogProbs         int                `json:"logprobs,omitempty" bson:"logprobs,omitempty"`
 	Echo             bool               `json:"echo,omitempty" bson:"echo,omitempty"`
-	Stop             []string           `json:"stop,omitempty" bson:"stop,omitempty"`
+	Stop             []string           `json:"stop,omitempty" bson:"stop"`
 	PresencePenalty  float32            `json:"presence_penalty,omitempty" bson:"presence_penalty,omitempty"`
 	FrequencyPenalty float32            `json:"frequency_penalty,omitempty" bson:"frequency_penalty,omitempty"`
 	BestOf           int                `json:"best_of,omitempty" bson:"best_of,omitempty"`
@@ -43,7 +43,7 @@ type Completion struct {
 	ID               string             `json:"id" bson:"id,omitempty"`               //这里是返回的ID,与mongodb的id不同,要区别
 	Object           string             `json:"object" bson:"object,omitempty"`
 	Created          int64              `json:"created" bson:"created,omitempty"`
-	Choices          []CompletionChoice `json:"choices" bson:"choices,omitempty"`
+	Choices          []CompletionChoice `json:"choices" bson:"choices"`
 	Usage            Usage              `json:"usage" bson:"usage"`
 	CreateTimeAt     time.Time          `json:"createTimeAt" bson:"createTimeAt,omitempty"`
 	UpdateTimeAt     time.Time          `json:"updateTimeAt" bson:"updateTimeAt,omitempty"`
@@ -82,7 +82,7 @@ type CompletionChoice struct {
 	Text         string        `json:"text" bson:"text,omitempty"`
 	Index        int           `json:"index" bson:"index,omitempty"`
 	FinishReason string        `json:"finish_reason" bson:"finish_reason,omitempty"`
-	LogProbs     LogprobResult `json:"logprobs" bson:"logprobs,omitempty"`
+	LogProbs     LogprobResult `json:"logprobs" bson:"logprobs"`
 }
 
 type Usage struct {
