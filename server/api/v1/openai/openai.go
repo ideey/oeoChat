@@ -1,9 +1,7 @@
 package openai
 
 import (
-	"bytes"
 	"fmt"
-	"io/ioutil"
 	"strings"
 	"time"
 
@@ -203,15 +201,15 @@ func (myOpenaiApi *OpenaiApi) GetMessageFromTelegram(c *gin.Context) {
 	fmt.Println("收到telegram服务器webHook消息:")
 	response.Ok(c)
 
-	data, err := c.GetRawData()
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-	fmt.Printf("data: %v\n", string(data))
-	c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(data)) //
+	// data, err := c.GetRawData()
+	// if err != nil {
+	// 	fmt.Println(err.Error())
+	// }
+	// fmt.Printf("data: %v\n", string(data))
+	// c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(data)) //
 
 	var telegramBotUpdate openai.TelegramBotUpdate
-	err = c.ShouldBindJSON(&telegramBotUpdate)
+	err := c.ShouldBindJSON(&telegramBotUpdate)
 	if err != nil {
 		fmt.Printf("绑定出错:err: %v\n", err)
 		return
@@ -282,7 +280,7 @@ func (myOpenaiApi *OpenaiApi) GetMessageFromTelegram(c *gin.Context) {
 						myChoice.Text = v.Text
 						myChoice.Index = v.Index
 						myChoice.FinishReason = v.FinishReason
-						_ = append(myCompletion.Choices, myChoice)
+						myCompletion.Choices = append(myCompletion.Choices, myChoice)
 					}
 				}
 				myCompletion.Usage.PromptTokens = resp.Usage.PromptTokens
@@ -290,7 +288,7 @@ func (myOpenaiApi *OpenaiApi) GetMessageFromTelegram(c *gin.Context) {
 				myCompletion.Usage.TotalTokens = resp.Usage.TotalTokens
 			}
 			myCompletion.UpdateTimeAt = time.Now()
-			fmt.Printf("myCompletion:%+v\n", myCompletion)
+			// fmt.Printf("myCompletion:%+v\n", myCompletion)
 			myOpenaiService.SaveCompletins(myCompletion) //保存记录到mongodb
 		}
 	}
@@ -303,3 +301,27 @@ func (myOpenaiApi *OpenaiApi) GetMessageFromTelegram(c *gin.Context) {
 		fmt.Println("这里哟1")
 	}
 }
+
+// {
+//     "update_id": 277553175,
+//     "message": {
+//         "message_id": 105,
+//         "from": {
+//             "id": 5492260314,
+//             "is_bot": false,
+//             "first_name": "Miss",
+//             "last_name": "hi",
+//             "username": "oelitt",
+//             "language_code": "zh-hans"
+//         },
+//         "chat": {
+//             "id": 5492260314,
+//             "first_name": "Miss",
+//             "last_name": "hi",
+//             "username": "oelitt",
+//             "type": "private"
+//         },
+//         "date": 1676724759,
+//         "text": "我想有一个家"
+//     }
+// }
