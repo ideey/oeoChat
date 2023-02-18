@@ -267,10 +267,12 @@ func (myOpenaiApi *OpenaiApi) GetMessageFromTelegram(c *gin.Context) {
 				fmt.Printf("resp.choices:%+v", resp)
 				fmt.Printf("resp.choices:%+v", myCompletion)
 				if len(resp.Choices) >= 1 {
-					for i, v := range resp.Choices {
-						myCompletion.Choices[i].Text = v.Text
-						myCompletion.Choices[i].Index = v.Index
-						myCompletion.Choices[i].FinishReason = v.FinishReason
+					for _, v := range resp.Choices {
+						var myChoice openai.CompletionChoice
+						myChoice.Text = v.Text
+						myChoice.Index = v.Index
+						myChoice.FinishReason = v.FinishReason
+						_ = append(myCompletion.Choices, myChoice)
 					}
 				}
 				myCompletion.Usage.PromptTokens = resp.Usage.PromptTokens
