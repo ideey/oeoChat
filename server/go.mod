@@ -24,6 +24,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/qiniu/api.v7/v7 v7.4.1
 	github.com/robfig/cron/v3 v3.0.1
+	github.com/sashabaranov/go-openai v1.7.0
 	github.com/satori/go.uuid v1.2.0
 	github.com/shirou/gopsutil/v3 v3.22.5
 	github.com/songzhibin97/gkit v1.2.7
@@ -113,7 +114,6 @@ require (
 	github.com/power-devops/perfstat v0.0.0-20210106213030-5aafc221ea8c // indirect
 	github.com/qiniu/qmgo v1.1.5
 	github.com/remyoudompheng/bigfft v0.0.0-20200410134404-eec4a21b6bb0 // indirect
-	github.com/sashabaranov/go-openai v1.7.0
 	github.com/spf13/afero v1.2.2 // indirect
 	github.com/spf13/cast v1.3.1 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
