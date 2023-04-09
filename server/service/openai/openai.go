@@ -8,7 +8,7 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/openai"
 	openaiReq "github.com/flipped-aurora/gin-vue-admin/server/model/openai/request"
-	gogpt "github.com/sashabaranov/go-gpt3"
+	gogpt "github.com/sashabaranov/go-openai"
 	"gorm.io/gorm"
 )
 
@@ -89,7 +89,7 @@ func (myOpenaiService *OpenaiService) GetOpenaiInfoList(info openaiReq.OpenaiSea
 
 //=====以下为自定义接口服务============
 
-// OpenaiCompletions openai的Completions接口服务
+// OpenaiCompletions openai的Completions接口服务,一次性返回数据
 // Author [piexlmax](https://github.com/piexlmax)
 func (op *OpenaiService) OpenaiCompletions(completionsRequest gogpt.CompletionRequest) (resp gogpt.CompletionResponse, err error) {
 
@@ -101,6 +101,11 @@ func (op *OpenaiService) OpenaiCompletions(completionsRequest gogpt.CompletionRe
 		return resp, err
 	}
 	return resp, nil
+}
+
+//GPT3Dot5Turbo Stream流式返回
+func (op *OpenaiService) ChatCompletions(message gogpt.ChatCompletionRequest) {
+
 }
 
 //保存Completion记录到mongodb

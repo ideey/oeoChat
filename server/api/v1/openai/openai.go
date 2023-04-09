@@ -13,7 +13,7 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/service"
 	"github.com/flipped-aurora/gin-vue-admin/server/utils"
 	"github.com/gin-gonic/gin"
-	gogpt "github.com/sashabaranov/go-gpt3"
+	gogpt "github.com/sashabaranov/go-openai"
 	"go.uber.org/zap"
 )
 
@@ -21,7 +21,7 @@ type OpenaiApi struct {
 }
 
 var myOpenaiService = service.ServiceGroupApp.OpenaiServiceGroup.OpenaiService
-var telegramService = service.ServiceGroupApp.OpenaiServiceGroup.TelegramService
+var telegramService = service.ServiceGroupApp.TelegramServiceGroup.TelegramService
 
 // CreateOpenai 创建Openai
 // @Tags Openai

@@ -25,7 +25,7 @@ func (Openai) TableName() string {
 type Completion struct {
 	Username         string             `json:"username" bson:"username,omitempty"` //这里是客户端web/手机mobile端/小程序端的注册用户名
 	Model            string             `json:"model" bson:"model,omitempty"`
-	Prompt           string             `json:"prompt,omitempty" bson:"prompt,omitempty"`
+	Prompt           any                `json:"prompt,omitempty" bson:"prompt,omitempty"`
 	Suffix           string             `json:"suffix,omitempty" bson:"suffix,omitempty"`
 	MaxTokens        int                `json:"max_tokens,omitempty" bson:"max_tokens,omitempty"`
 	Temperature      float32            `json:"temperature,omitempty" bson:"temperature,omitempty"`
